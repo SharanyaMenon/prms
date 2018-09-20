@@ -7,7 +7,7 @@ import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImpl;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.ProgramDAO;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.impl.ProgramDAOImpl;
-import sg.edu.nus.iss.phoenix.scheduleprogram.impl.ScheduleDaoImpl;
+import sg.edu.nus.iss.phoenix.scheduleprogram.dao.impl.ScheduleDaoImpl;
 
 public class DAOFactoryImpl implements DAOFactory {
 

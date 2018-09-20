@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.edu.nus.iss.phoenix.scheduleprogram.impl;
+package sg.edu.nus.iss.phoenix.scheduleprogram.dao.impl;
 
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
 
