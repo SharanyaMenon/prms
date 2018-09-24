@@ -99,7 +99,7 @@ public interface ScheduleDao {
      * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
      * @throws java.sql.SQLException
 	 */
-	public abstract void update(ProgramSlot valueObject)
+	public abstract void update(ProgramSlot programSlot)
 			throws NotFoundException, SQLException;
 
 	/**

@@ -10,6 +10,7 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -58,17 +59,17 @@ public class ScheduleRestService {
     @Path("/delete/{dateOfPgm}/startTime/{startTime}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void deleteScheduleProgram(@PathParam("dateOfPgm") String dateOfPgm, @PathParam("startTime") String startTime) {
-        java.sql.Date pgDate = null;
-        java.sql.Date pgStartTime = null;
+        java.sql.Timestamp pgDate = null;
+        java.sql.Timestamp pgStartTime = null;
         try {
 
             String dateInString = URLDecoder.decode(dateOfPgm, "UTF-8");
             Date date = dateFormatter.parse(dateInString);
-            pgDate = new java.sql.Date(date.getTime());
+            pgDate = new Timestamp(date.getTime());
 
             String timeInString = URLDecoder.decode(startTime, "UTF-8");
             Date time = dateFormatter.parse(timeInString);
-            pgStartTime = new java.sql.Date(time.getTime());
+            pgStartTime = new Timestamp(time.getTime());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return;

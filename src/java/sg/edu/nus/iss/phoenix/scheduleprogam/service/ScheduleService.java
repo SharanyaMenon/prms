@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.sql.Date;
+import java.sql.Timestamp;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
@@ -71,7 +72,7 @@ public class ScheduleService {
         }
     }
     
-    public void processDelete(Date date, Date startingTime) {
+    public void processDelete(Timestamp date, Timestamp startingTime) {
         try {
             ProgramSlot programSlot = new ProgramSlot(date, startingTime);
             scheduleDao.delete(programSlot);

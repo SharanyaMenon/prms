@@ -93,8 +93,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 ProgramSlot pgSlot = createValueObject();
 
                 pgSlot.setDuration(result.getTime("duration"));
-                pgSlot.setDate(result.getDate("dateOfProgram"));
-                pgSlot.setStartTime(result.getDate("startTime"));
+                pgSlot.setDate(result.getTimestamp("dateOfProgram"));
+                pgSlot.setStartTime(result.getTimestamp("startTime"));
                 pgSlot.setName(result.getString("program-name"));
 
                 pgSlotList.add(pgSlot);
@@ -174,12 +174,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
             sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `presenter`, `producer` , `endTime`) VALUES (?,?,?,?,?,?,?); ";
             stmt = connection.prepareStatement(sql);
             stmt.setTime(1, programSlot.getDuration());
-            stmt.setDate(2, programSlot.getDate());
-            stmt.setDate(3, programSlot.getStartTime());
+            stmt.setTimestamp(2, programSlot.getDate());
+            stmt.setTimestamp(3, programSlot.getStartTime());
             stmt.setString(4, programSlot.getName());
             stmt.setString(5, programSlot.getPresenter());
             stmt.setString(6, programSlot.getProducer());
-            stmt.setDate(7, programSlot.getEndTime());
+            stmt.setTimestamp(7, programSlot.getEndTime());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount != 1) {
@@ -198,7 +198,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public void update(ProgramSlot programSlot) throws NotFoundException, SQLException {
-        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ? WHERE (`program-name` = ? ); ";
+        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
         PreparedStatement stmt = null;
         openConnection();
         try {
@@ -206,7 +206,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
             stmt.setString(1, programSlot.getPresenter());
             stmt.setString(2, programSlot.getProducer());
             stmt.setTime(3, programSlot.getDuration());
-            stmt.setString(4, programSlot.getName());
+            stmt.setTimestamp(4, programSlot.getDate());
+            stmt.setTimestamp(5, programSlot.getStartTime());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount == 0) {
@@ -239,8 +240,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
         openConnection();
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setDate(1, programSlot.getDate());
-            stmt.setDate(2, programSlot.getStartTime());
+            stmt.setTimestamp(1, programSlot.getDate());
+            stmt.setTimestamp(2, programSlot.getStartTime());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount == 0) {
