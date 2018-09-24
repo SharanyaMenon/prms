@@ -10,7 +10,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
@@ -48,13 +48,10 @@ public class ScheduleService {
     public boolean processCreate(ProgramSlot programSlot) {
         //check for overlap        
         try {
-//            Time startTime = programSlot.getStartTime();
-//            Time duration = programSlot.getTypicalDuration();
-//            getEndTime(startTime, duration);
+            // need to set the endtime correctly
             programSlot.setEndTime(programSlot.getStartTime());
             scheduleDao.create(programSlot);
         } catch (SQLException e) {
-            
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

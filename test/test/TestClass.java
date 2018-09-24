@@ -18,8 +18,8 @@ public class TestClass {
 
     public static void main(String[] args) {
         TestClass testClass = new TestClass();
-        testClass.createPgSlot();
-//        testClass.delete();
+//        testClass.createPgSlot();
+        testClass.delete();
 //testClass.update();
     }
 
@@ -40,11 +40,11 @@ public class TestClass {
         restService.createSchedule(programSlot);
     }
 
-//    private void delete() {
-//        ScheduleRestService restService = new ScheduleRestService();
-//        restService.deleteScheduleProgram("charity");
-//
-//    }
+    private void delete() {
+        ScheduleRestService restService = new ScheduleRestService();
+        restService.deleteScheduleProgram("2018-09-24 00:00:00" ,"2018-09-24 00:00:00");
+
+    }
 
     private void update() {
         ScheduleRestService restService = new ScheduleRestService();

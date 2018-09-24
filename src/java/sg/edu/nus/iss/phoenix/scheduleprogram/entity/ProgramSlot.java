@@ -29,8 +29,9 @@ public class ProgramSlot {
     private Date  startTime;
     private Date  endTime;
 
-    public ProgramSlot(java.util.Date date, java.util.Date startingTime) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ProgramSlot(Date date, Date startTime) {
+        this.date = date;
+        this.startTime = startTime;
     }
 
     public Date  getEndTime() {
