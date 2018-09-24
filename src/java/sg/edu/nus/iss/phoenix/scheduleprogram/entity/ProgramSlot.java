@@ -15,19 +15,33 @@ import java.sql.Date;
 public class ProgramSlot {
 
     private String name;
-    private String id;
-    private Time typicalDuration;
+    private Time duration;
 
-    private Date date;
-    private Time startTime;
-
-    public ProgramSlot(String name, String id, Time typicalDuration, Date date, Time startTime) {
+    public ProgramSlot(String name, Time typicalDuration, Date date, Date  startTime, String presenter, String producer) {
         this.name = name;
-        this.id = id;
-        this.typicalDuration = typicalDuration;
+        this.duration = typicalDuration;
         this.date = date;
         this.startTime = startTime;
+        this.presenter = presenter;
+        this.producer = producer;
     }
+    private Date date;
+    private Date  startTime;
+    private Date  endTime;
+
+    public ProgramSlot(java.util.Date date, java.util.Date startingTime) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Date  getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date  endTime) {
+        this.endTime = endTime;
+    }
+    private String presenter;
+    private String producer;
 
     public ProgramSlot() {
 
@@ -36,7 +50,22 @@ public class ProgramSlot {
 
     public ProgramSlot(String scheduleProgramName) {
         this.name = scheduleProgramName;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getPresenter() {
+        return presenter;
+    }
+
+    public void setPresenter(String presenter) {
+        this.presenter = presenter;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public String getName() {
@@ -47,20 +76,12 @@ public class ProgramSlot {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public Time getDuration() {
+        return duration;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Time getTypicalDuration() {
-        return typicalDuration;
-    }
-
-    public void setTypicalDuration(Time typicalDuration) {
-        this.typicalDuration = typicalDuration;
+    public void setDuration(Time duration) {
+        this.duration = duration;
     }
 
     public Date getDate() {
@@ -71,11 +92,11 @@ public class ProgramSlot {
         this.date = date;
     }
 
-    public Time getStartTime() {
+    public Date  getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(Date  startTime) {
         this.startTime = startTime;
     }
 

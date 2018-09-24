@@ -92,11 +92,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
             while (result.next()) {
                 ProgramSlot pgSlot = createValueObject();
 
-                pgSlot.setTypicalDuration(result.getTime("duration"));
+                pgSlot.setDuration(result.getTime("duration"));
                 pgSlot.setDate(result.getDate("dateOfProgram"));
-                pgSlot.setStartTime(result.getTime("startTime"));
+                pgSlot.setStartTime(result.getDate("startTime"));
                 pgSlot.setName(result.getString("program-name"));
-                pgSlot.setId(result.getString("slot_id"));
 
                 pgSlotList.add(pgSlot);
             }
@@ -135,7 +134,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
                 valueObject.setName(result.getString("name"));
 //				valueObject.setDescription(result.getString("desc"));
-                valueObject.setTypicalDuration(result
+                valueObject.setDuration(result
                         .getTime("typicalDuration"));
 
             } else {
@@ -172,13 +171,15 @@ public class ScheduleDaoImpl implements ScheduleDao {
         openConnection();
 
         try {
-            sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `slot_id`) VALUES (?,?,?,?,?); ";
+            sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `presenter`, `producer` , `endTime`) VALUES (?,?,?,?,?,?,?); ";
             stmt = connection.prepareStatement(sql);
-            stmt.setTime(1, programSlot.getTypicalDuration());
+            stmt.setTime(1, programSlot.getDuration());
             stmt.setDate(2, programSlot.getDate());
-            stmt.setTime(3, programSlot.getStartTime());
+            stmt.setDate(3, programSlot.getStartTime());
             stmt.setString(4, programSlot.getName());
-            stmt.setString(5, programSlot.getId());
+            stmt.setString(5, programSlot.getPresenter());
+            stmt.setString(6, programSlot.getProducer());
+            stmt.setDate(7, programSlot.getEndTime());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount != 1) {
@@ -196,59 +197,57 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public void save(ProgramSlot programSlot) throws NotFoundException, SQLException {
-//        String sql = "UPDATE `program-slot` SET `desc` = ?, `typicalDuration` = ? WHERE (`program-name` = ? ); ";
-//        PreparedStatement stmt = null;
-//        openConnection();
-//        try {
-//            stmt = connection.prepareStatement(sql);
-//            stmt.setString(1, valueObject.getDescription());
-//            stmt.setTime(2, valueObject.getTypicalDuration());
-//
-//            stmt.setString(3, valueObject.getName());
-//
-//            int rowcount = databaseUpdate(stmt);
-//            if (rowcount == 0) {
-//                // System.out.println("Object could not be saved! (PrimaryKey not found)");
-//                throw new NotFoundException(
-//                        "Object could not be saved! (PrimaryKey not found)");
-//            }
-//            if (rowcount > 1) {
-//                // System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
-//                throw new SQLException(
-//                        "PrimaryKey Error when updating DB! (Many objects were affected!)");
-//            }
-//        } finally {
-//            if (stmt != null) {
-//                stmt.close();
-//            }
-//            closeConnection();
-//        }
-
-    }
-
-    @Override
-    public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException {
-        if (valueObject.getName() == null) {
-            // System.out.println("Can not delete without Primary-Key!");
-            throw new NotFoundException("Can not delete without Primary-Key!");
-        }
-
-        String sql = "DELETE FROM `radio-program` WHERE (`name` = ? ); ";
+    public void update(ProgramSlot programSlot) throws NotFoundException, SQLException {
+        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ? WHERE (`program-name` = ? ); ";
         PreparedStatement stmt = null;
         openConnection();
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setString(1, valueObject.getName());
+            stmt.setString(1, programSlot.getPresenter());
+            stmt.setString(2, programSlot.getProducer());
+            stmt.setTime(3, programSlot.getDuration());
+            stmt.setString(4, programSlot.getName());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount == 0) {
-                // System.out.println("Object could not be deleted (PrimaryKey not found)");
+                // System.out.println("Object could not be saved! (PrimaryKey not found)");
+                throw new NotFoundException(
+                        "Object could not be saved! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                // System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
+                throw new SQLException(
+                        "PrimaryKey Error when updating DB! (Many objects were affected!)");
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            closeConnection();
+        }
+
+    }
+
+    @Override
+    public void delete(ProgramSlot programSlot) throws NotFoundException, SQLException {
+        if (programSlot.getStartTime() == null||programSlot.getDate() == null) {
+            throw new NotFoundException("Can not delete without Primary-Key!");
+        }
+
+        String sql = "DELETE FROM `program-slot` WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
+        PreparedStatement stmt = null;
+        openConnection();
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setDate(1, programSlot.getDate());
+            stmt.setDate(2, programSlot.getStartTime());
+
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount == 0) {
                 throw new NotFoundException(
                         "Object could not be deleted! (PrimaryKey not found)");
             }
             if (rowcount > 1) {
-                // System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
                 throw new SQLException(
                         "PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }

@@ -7,15 +7,18 @@ package sg.edu.nus.iss.phoenix.scheduleprogram.restful;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -33,6 +36,12 @@ public class ScheduleRestService {
     private UriInfo context;
 
     private ScheduleService scheduleService;
+    
+     String datePattern = "yyyy-MM-dd HH:mm:ss";
+     SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+     String timePattern = "HH:mm:ss";
+     SimpleDateFormat timeFormatter = new SimpleDateFormat(timePattern);
+
 
     public ScheduleRestService() {
         scheduleService = new ScheduleService();
@@ -41,23 +50,32 @@ public class ScheduleRestService {
     @PUT
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createSchedule(ProgramSlot programSlot) {
-        scheduleService.processCreate(programSlot);
+    public boolean createSchedule(ProgramSlot programSlot) {
+        boolean isCreated = scheduleService.processCreate(programSlot);
+        return isCreated;
     }
 
     @DELETE
-    @Path("/delete/{scheduleProgramName}")
+    @Path("/delete/{dateOfPgm}/startTime/{startTime}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteScheduleProgram(@PathParam("scheduleProgramName") String pgName) {
-        String name;
+    public void deleteScheduleProgram(@PathParam("dateOfPgm") String dateOfPgm, @PathParam("startTime") String startTime) {
+        Date pgDate;
+        Date pgStartTime;
         try {
-            name = URLDecoder.decode(pgName, "UTF-8");
+
+            String date = URLDecoder.decode(dateOfPgm, "UTF-8");
+            pgDate = dateFormatter.parse(date);
+
+            String startingTime = URLDecoder.decode(dateOfPgm, "UTF-8");
+            pgStartTime = timeFormatter.parse(startingTime);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return;
+        } catch (ParseException ex) {
+            Logger.getLogger(ScheduleRestService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        scheduleService.processDelete(name);
+//        scheduleService.processDelete(pgDate, pgStartTime);
     }
 
     @POST
@@ -94,5 +112,4 @@ public class ScheduleRestService {
 //
 //        return programSlots;
 //    }
-
 }
