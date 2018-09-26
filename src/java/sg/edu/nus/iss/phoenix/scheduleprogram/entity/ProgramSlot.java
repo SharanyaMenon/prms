@@ -6,7 +6,7 @@
 package sg.edu.nus.iss.phoenix.scheduleprogram.entity;
 
 import java.sql.Time;
-import java.sql.Timestamp;
+import java.sql.Date;
 
 /**
  *
@@ -16,20 +16,23 @@ public class ProgramSlot {
 
     private String name;
     private Time duration;
+    private Date date;
+    private Time  startTime;
+    private Time  endTime;
+    private String presenter;
+    private String producer;
 
-    public ProgramSlot(String name, Time typicalDuration, Timestamp date, Timestamp  startTime, String presenter, String producer) {
+    public ProgramSlot(String name, Time typicalDuration, Date date, Time  startTime, String presenter, String producer) {
         this.name = name;
         this.duration = typicalDuration;
         this.date = date;
         this.startTime = startTime;
         this.presenter = presenter;
         this.producer = producer;
+       
     }
-    private Timestamp date;
-    private Timestamp  startTime;
-    private Timestamp  endTime;
-
-    public ProgramSlot(Timestamp date, Timestamp startTime) {
+   
+    public ProgramSlot(Date date, Time startTime) {
         this.date = date;
         this.startTime = startTime;
     }
@@ -39,15 +42,14 @@ public class ProgramSlot {
         return "ProgramSlot{" + "name=" + name + ", duration=" + duration + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime + ", presenter=" + presenter + ", producer=" + producer + '}';
     }
 
-    public Timestamp  getEndTime() {
+    public Time  getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp  endTime) {
+    public void setEndTime(Time  endTime) {
         this.endTime = endTime;
     }
-    private String presenter;
-    private String producer;
+   
 
     public ProgramSlot() {
 
@@ -89,19 +91,19 @@ public class ProgramSlot {
         this.duration = duration;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public Timestamp  getStartTime() {
+    public Time  getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp  startTime) {
+    public void setStartTime(Time  startTime) {
         this.startTime = startTime;
     }
 

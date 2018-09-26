@@ -27,8 +27,8 @@ public class TestClass {
     public static void main(String[] args) {
         TestClass testClass = new TestClass();
         try {
-//            testClass.createPgSlot();
-    testClass.getAllPgSlots();
+            testClass.createPgSlot();
+//    testClass.getAllPgSlots();
 //            testClass.delete();
 //testClass.update();
 //            testClass.test();
@@ -41,55 +41,42 @@ public class TestClass {
     private void createPgSlot() throws ParseException {
         ScheduleRestService restService = new ScheduleRestService();
         ProgramSlot programSlot = new ProgramSlot();
-//        programSlot.setDate(new Timestamp(System.currentTimeMillis()));
         programSlot.setName("charity");
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date startDate = sdf.parse("2018-09-12 22:00:00");
-        Timestamp stTime = new Timestamp(startDate.getTime());
-        programSlot.setStartTime(stTime);
-        programSlot.setDate(stTime);
-        
-        
-//        long starttime_time = programSlot.getStartTime().getTime() ;
-//        long duration_time =  programSlot.getDuration().getTime();
-//        long sum = starttime_time +duration_time;
-//        Timestamp enddtime = new Timestamp(sum);
-//        programSlot.setEndTime(enddtime);
-//        String currentTime = sdf.format(new Date(System.currentTimeMillis()));
-//        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
         programSlot.setPresenter("presnter");
         programSlot.setProducer("producerdfczcfsdf");
-//        programSlot.setStartTime(new Timestamp(System.currentTimeMillis()));
+        programSlot.setDate(new Date(System.currentTimeMillis()));
+        programSlot.setStartTime(new Time(System.currentTimeMillis()));
         programSlot.setDuration(new Time(System.currentTimeMillis()));
+   
         restService.createSchedule(programSlot);
     }
 
-    private void delete() {
-        ScheduleRestService restService = new ScheduleRestService();
-        restService.deleteScheduleProgram("2018-09-24 00:00:00", "2018-09-24 20:34:00");
-
-    }
-
-    private void update() throws ParseException {
-        ScheduleRestService restService = new ScheduleRestService();
-        ProgramSlot programSlot = new ProgramSlot();
-
-        programSlot.setName("charity");
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date startTime = sdf.parse("2018-09-24 20:34:00");
-        Timestamp stTime = new Timestamp(startTime.getTime());
-        java.util.Date date = sdf.parse("2018-09-24 00:00:00");
-        Timestamp dt = new Timestamp(date.getTime());
-        programSlot.setDate(dt);
-
-        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
-        programSlot.setPresenter("hi");
-        programSlot.setProducer("haaaaiiiiiiiii");
-        programSlot.setStartTime(stTime);
-        programSlot.setDuration(new Time(System.currentTimeMillis() + 1000));
-        restService.updateProgramSlot(programSlot);
-
-    }
+//    private void delete() {
+//        ScheduleRestService restService = new ScheduleRestService();
+//        restService.deleteScheduleProgram("2018-09-24 00:00:00", "2018-09-24 20:34:00");
+//
+//    }
+//
+//    private void update() throws ParseException {
+//        ScheduleRestService restService = new ScheduleRestService();
+//        ProgramSlot programSlot = new ProgramSlot();
+//
+//        programSlot.setName("charity");
+//        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        java.util.Date startTime = sdf.parse("2018-09-24 20:34:00");
+//        Timestamp stTime = new Timestamp(startTime.getTime());
+//        java.util.Date date = sdf.parse("2018-09-24 00:00:00");
+//        Timestamp dt = new Timestamp(date.getTime());
+//        programSlot.setDate(dt);
+//
+//        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
+//        programSlot.setPresenter("hi");
+//        programSlot.setProducer("haaaaiiiiiiiii");
+//        programSlot.setStartTime(stTime);
+//        programSlot.setDuration(new Time(System.currentTimeMillis() + 1000));
+//        restService.updateProgramSlot(programSlot);
+//
+//    }
 
     public void test() {
         Date now = new Date(System.currentTimeMillis());
@@ -107,17 +94,17 @@ public class TestClass {
         System.out.println(df.format(new Date(sum)));
     }
     
-    public void getAllPgSlots(){
-        ScheduleRestService restService = new ScheduleRestService();
-        ProgramSlots programSlots = restService.getAllProgramSlot();
-        ArrayList<ProgramSlot> pgSlotList = programSlots.getPgSlots();
-        for (int i = 0; i < pgSlotList.size(); i++) {
-            ProgramSlot pgSlot =  pgSlotList.get(i);
-            System.out.println(pgSlot.toString());;
-        }
-        
-        
-    }
+//    public void getAllPgSlots(){
+//        ScheduleRestService restService = new ScheduleRestService();
+//        ProgramSlots programSlots = restService.getAllProgramSlot();
+//        ArrayList<ProgramSlot> pgSlotList = programSlots.getPgSlots();
+//        for (int i = 0; i < pgSlotList.size(); i++) {
+//            ProgramSlot pgSlot =  pgSlotList.get(i);
+//            System.out.println(pgSlot.toString());;
+//        }
+//        
+//        
+//    }
     
 
 }
