@@ -49,8 +49,6 @@ public class ScheduleService {
     public boolean processCreate(ProgramSlot programSlot) {
         //check for overlap        
         try {
-            // need to set the endtime correctly
-            programSlot.setEndTime(programSlot.getStartTime());
             scheduleDao.create(programSlot);
         } catch (SQLException e) {
             // TODO Auto-generated catch block

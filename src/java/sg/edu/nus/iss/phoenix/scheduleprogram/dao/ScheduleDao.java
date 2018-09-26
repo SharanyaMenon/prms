@@ -93,7 +93,7 @@ public interface ScheduleDao {
 	 * database. If save can not find matching row, NotFoundException will be
 	 * thrown.
 	 * 
-	 * @param valueObject
+	 * @param programSlot
 	 *            This parameter contains the class instance to be saved.
 	 *            Primary-key field must be set for this to work properly.
      * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
@@ -111,7 +111,7 @@ public interface ScheduleDao {
 	 * what it was in the deleted object. If delete can not find matching row,
 	 * NotFoundException will be thrown.
 	 * 
-	 * @param valueObject
+	 * @param programSlot
 	 *            This parameter contains the class instance to be deleted.
 	 *            Primary-key field must be set for this to work properly.
      * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException

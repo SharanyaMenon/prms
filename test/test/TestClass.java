@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
@@ -27,6 +29,7 @@ public class TestClass {
 //            testClass.delete();
 //testClass.update();
 //            testClass.test();
+testClass.t();
         } catch (Exception ex) {
             Logger.getLogger(TestClass.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -39,12 +42,12 @@ public class TestClass {
         programSlot.setName("charity");
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-//        String currentTime = sdf.format(new Date(System.currentTimeMillis()));
-        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
+        String currentTime = sdf.format(new Date(System.currentTimeMillis()));
+//        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
         programSlot.setPresenter("presnter");
-        programSlot.setProducer("producer");
-        programSlot.setStartTime(new Timestamp(1537796341));
-        programSlot.setDuration(new Time(1537796341));
+        programSlot.setProducer("producerdfczcfsdf");
+        programSlot.setStartTime(new Timestamp(System.currentTimeMillis()));
+        programSlot.setDuration(new Time(System.currentTimeMillis()));
         restService.createSchedule(programSlot);
     }
 
@@ -80,6 +83,15 @@ public class TestClass {
         Timestamp ts = new Timestamp(now.getTime());
         System.out.println(ts);
 
+    }
+
+    public void t() throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        java.util.Date d1 =  df.parse("20:10:30"); //date 1
+        java.util.Date d2 =  df.parse("5:10:30"); // date 2
+        long sum = d1.getTime() + d2.getTime();
+        System.out.println(df.format(new Date(sum)));
     }
 
 }

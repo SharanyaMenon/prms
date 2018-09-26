@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -51,6 +52,9 @@ public class ScheduleRestService {
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean createSchedule(ProgramSlot programSlot) {
+
+        long sum = programSlot.getStartTime().getTime() + programSlot.getDuration().getTime();
+        programSlot.setEndTime(new Timestamp(sum));
         boolean isCreated = scheduleService.processCreate(programSlot);
         return isCreated;
     }
