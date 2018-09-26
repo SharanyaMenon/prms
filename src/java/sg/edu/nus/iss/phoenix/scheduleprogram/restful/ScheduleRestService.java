@@ -11,15 +11,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Timestamp;
-import java.util.TimeZone;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -53,8 +55,13 @@ public class ScheduleRestService {
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean createSchedule(ProgramSlot programSlot) {
 
-        long sum = programSlot.getStartTime().getTime() + programSlot.getDuration().getTime();
-        programSlot.setEndTime(new Timestamp(sum));
+        long starttime_time = programSlot.getStartTime().getTime() ;
+        long duration_time =  programSlot.getDuration().getTime();
+        long sum = starttime_time +duration_time;
+        Timestamp enddtime = new Timestamp(sum);
+        programSlot.setEndTime(enddtime);
+//        long sum = programSlot.getStartTime().getTime() + programSlot.getDuration().getTime();
+//        programSlot.setEndTime(new Timestamp(sum));
         boolean isCreated = scheduleService.processCreate(programSlot);
         return isCreated;
     }
@@ -98,24 +105,20 @@ public class ScheduleRestService {
 //        scheduleService.processCreate(programSlot);
     }
 
-//    @GET
-//    @Path("/all")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public ProgramSlots getAllRadioPrograms() {
-//        ArrayList<ProgramSlot> pgSlotList = scheduleService.findAllProgramSlot();
-//        ProgramSlots programSlots = new ProgramSlots();
-//
-//        programSlots.setPgSlots(new ArrayList<ProgramSlot>());
-//
-//        for (int i = 0; i < pgSlotList.size(); i++) {
-//            programSlots.getPgSlots().add(
-//                    new ProgramSlot(pgSlotList.get(i).getName(),
-//                            pgSlotList.get(i).getId(),
-//                            pgSlotList.get(i).getTypicalDuration(),
-//                            pgSlotList.get(i).getDate(),
-//                            pgSlotList.get(i).getStartTime()));
-//        }
-//
-//        return programSlots;
-//    }
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ProgramSlots getAllProgramSlot() {
+        ArrayList<ProgramSlot> pgSlotList = scheduleService.findAllProgramSlot();
+        ProgramSlots programSlots = new ProgramSlots();
+
+        programSlots.setPgSlots(new ArrayList<ProgramSlot>());
+
+        for (int i = 0; i < pgSlotList.size(); i++) {
+            ProgramSlot pgSlot =  pgSlotList.get(i);
+            ProgramSlot programSlot = new ProgramSlot(pgSlot.getName(), pgSlot.getDuration(), pgSlot.getDate(), pgSlot.getStartTime(), pgSlot.getPresenter(), pgSlot.getProducer());
+            programSlots.getPgSlots().add(programSlot);
+        }
+        return programSlots;
+    }
 }

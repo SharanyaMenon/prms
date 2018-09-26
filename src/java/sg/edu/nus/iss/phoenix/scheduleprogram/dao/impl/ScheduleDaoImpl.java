@@ -90,14 +90,17 @@ public class ScheduleDaoImpl implements ScheduleDao {
             result = stmt.executeQuery();
 
             while (result.next()) {
+                
                 ProgramSlot pgSlot = createValueObject();
-
                 pgSlot.setDuration(result.getTime("duration"));
                 pgSlot.setDate(result.getTimestamp("dateOfProgram"));
                 pgSlot.setStartTime(result.getTimestamp("startTime"));
                 pgSlot.setName(result.getString("program-name"));
-
+                pgSlot.setPresenter(result.getString("producer"));
+                pgSlot.setProducer(result.getString("presenter"));
+                pgSlot.setEndTime(result.getTimestamp("endTime"));
                 pgSlotList.add(pgSlot);
+                
             }
 
         } finally {
@@ -155,9 +158,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @Override
     public List<ProgramSlot> loadAll() throws SQLException {
         openConnection();
-        String sql = "SELECT * FROM `program-slot` ORDER BY `name` ASC; ";
-        List<ProgramSlot> searchResults = listQuery(connection
-                .prepareStatement(sql));
+        String sql = "SELECT * FROM `program-slot` ORDER BY `program-name` ASC; ";
+        List<ProgramSlot> searchResults = listQuery(connection.prepareStatement(sql));
         closeConnection();
         System.out.println("record size" + searchResults.size());
         return searchResults;

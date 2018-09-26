@@ -6,7 +6,6 @@
 package sg.edu.nus.iss.phoenix.scheduleprogram.entity;
 
 import java.sql.Time;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -35,6 +34,11 @@ public class ProgramSlot {
         this.startTime = startTime;
     }
 
+    @Override
+    public String toString() {
+        return "ProgramSlot{" + "name=" + name + ", duration=" + duration + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime + ", presenter=" + presenter + ", producer=" + producer + '}';
+    }
+
     public Timestamp  getEndTime() {
         return endTime;
     }
@@ -47,7 +51,6 @@ public class ProgramSlot {
 
     public ProgramSlot() {
 
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public ProgramSlot(String scheduleProgramName) {

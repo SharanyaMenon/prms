@@ -10,10 +10,12 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.scheduleprogram.restful.ProgramSlots;
 import sg.edu.nus.iss.phoenix.scheduleprogram.restful.ScheduleRestService;
 
 /**
@@ -25,28 +27,39 @@ public class TestClass {
     public static void main(String[] args) {
         TestClass testClass = new TestClass();
         try {
-            testClass.createPgSlot();
+//            testClass.createPgSlot();
+    testClass.getAllPgSlots();
 //            testClass.delete();
 //testClass.update();
 //            testClass.test();
-testClass.t();
+//testClass.t();
         } catch (Exception ex) {
             Logger.getLogger(TestClass.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void createPgSlot() {
+    private void createPgSlot() throws ParseException {
         ScheduleRestService restService = new ScheduleRestService();
         ProgramSlot programSlot = new ProgramSlot();
-        programSlot.setDate(new Timestamp(System.currentTimeMillis()));
+//        programSlot.setDate(new Timestamp(System.currentTimeMillis()));
         programSlot.setName("charity");
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        String currentTime = sdf.format(new Date(System.currentTimeMillis()));
+        java.util.Date startDate = sdf.parse("2018-09-12 22:00:00");
+        Timestamp stTime = new Timestamp(startDate.getTime());
+        programSlot.setStartTime(stTime);
+        programSlot.setDate(stTime);
+        
+        
+//        long starttime_time = programSlot.getStartTime().getTime() ;
+//        long duration_time =  programSlot.getDuration().getTime();
+//        long sum = starttime_time +duration_time;
+//        Timestamp enddtime = new Timestamp(sum);
+//        programSlot.setEndTime(enddtime);
+//        String currentTime = sdf.format(new Date(System.currentTimeMillis()));
 //        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
         programSlot.setPresenter("presnter");
         programSlot.setProducer("producerdfczcfsdf");
-        programSlot.setStartTime(new Timestamp(System.currentTimeMillis()));
+//        programSlot.setStartTime(new Timestamp(System.currentTimeMillis()));
         programSlot.setDuration(new Time(System.currentTimeMillis()));
         restService.createSchedule(programSlot);
     }
@@ -93,5 +106,18 @@ testClass.t();
         long sum = d1.getTime() + d2.getTime();
         System.out.println(df.format(new Date(sum)));
     }
+    
+    public void getAllPgSlots(){
+        ScheduleRestService restService = new ScheduleRestService();
+        ProgramSlots programSlots = restService.getAllProgramSlot();
+        ArrayList<ProgramSlot> pgSlotList = programSlots.getPgSlots();
+        for (int i = 0; i < pgSlotList.size(); i++) {
+            ProgramSlot pgSlot =  pgSlotList.get(i);
+            System.out.println(pgSlot.toString());;
+        }
+        
+        
+    }
+    
 
 }

@@ -5,7 +5,7 @@
  */
 package sg.edu.nus.iss.phoenix.scheduleprogram.restful;
 
-import java.util.List;
+import java.util.ArrayList;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
@@ -14,13 +14,13 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
  */
 public class ProgramSlots {
 
-    private List<ProgramSlot> pgSlots;
+    private ArrayList<ProgramSlot> pgSlots;
 
-    public List<ProgramSlot> getPgSlots() {
+    public ArrayList<ProgramSlot> getPgSlots() {
         return pgSlots;
     }
 
-    public void setPgSlots(List<ProgramSlot> pgSlots) {
+    public void setPgSlots(ArrayList<ProgramSlot> pgSlots) {
         this.pgSlots = pgSlots;
     }
 
