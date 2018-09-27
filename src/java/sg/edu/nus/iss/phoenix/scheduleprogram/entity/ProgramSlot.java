@@ -7,6 +7,7 @@ package sg.edu.nus.iss.phoenix.scheduleprogram.entity;
 
 import java.sql.Time;
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  *
@@ -65,6 +66,55 @@ public class ProgramSlot {
 
     public void setPresenter(String presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.name);
+        hash = 61 * hash + Objects.hashCode(this.duration);
+        hash = 61 * hash + Objects.hashCode(this.date);
+        hash = 61 * hash + Objects.hashCode(this.startTime);
+        hash = 61 * hash + Objects.hashCode(this.endTime);
+        hash = 61 * hash + Objects.hashCode(this.presenter);
+        hash = 61 * hash + Objects.hashCode(this.producer);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProgramSlot other = (ProgramSlot) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.presenter, other.presenter)) {
+            return false;
+        }
+        if (!Objects.equals(this.producer, other.producer)) {
+            return false;
+        }
+        if (!Objects.equals(this.duration, other.duration)) {
+            return false;
+        }
+        if (!Objects.equals(this.date, other.date)) {
+            return false;
+        }
+        if (!Objects.equals(this.startTime, other.startTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.endTime, other.endTime)) {
+            return false;
+        }
+        return true;
     }
 
     public String getProducer() {

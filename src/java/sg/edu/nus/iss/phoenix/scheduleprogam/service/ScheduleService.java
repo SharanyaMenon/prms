@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,13 +30,6 @@ public class ScheduleService {
     
     private ScheduleDao scheduleDao;
     
-    private String datePattern = "yyyy-MM-dd";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
-    private String timePattern = "HH:mm:ss";
-    private SimpleDateFormat timeFormatter = new SimpleDateFormat(timePattern);
-
-    
     public ScheduleService() {
         super();
         // Sorry. This implementation is wrong. To be fixed.
@@ -49,6 +41,7 @@ public class ScheduleService {
         ArrayList<ProgramSlot> programSlotList = new ArrayList<ProgramSlot>();
         try {
             programSlotList = (ArrayList<ProgramSlot>) scheduleDao.loadAll();
+            
         } catch (SQLException e) {
             // TODO Auto-generated catch blocks
             e.printStackTrace();
@@ -59,10 +52,25 @@ public class ScheduleService {
     
     public boolean processCreate(ProgramSlot programSlot) {
         
-        //check for overlap        
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(programSlot.getStartTime().getTime());
+            System.out.println("Original = " + calendar.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            java.util.Date date = sdf.parse(programSlot.getDuration().toString());
+            int hours = date.getHours();
+            calendar.add(Calendar.HOUR, hours);
+            int minutes = date.getMinutes();
+            calendar.add(Calendar.MINUTE, minutes);
+            System.out.println("Original = " + calendar.getTime().getTime());
+            programSlot.setEndTime(new Time(calendar.getTime().getTime()));
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             boolean isOverlap = checkForOverlap(programSlot);
-            if(!isOverlap){
+            if (!isOverlap) {
                 scheduleDao.create(programSlot);
             }
             
@@ -76,6 +84,7 @@ public class ScheduleService {
     public void processModify(ProgramSlot programSlot) {
         //check for overlap
         try {
+            boolean isOverlap = checkForOverlap(programSlot);
             scheduleDao.update(programSlot);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
@@ -85,10 +94,11 @@ public class ScheduleService {
             e.printStackTrace();
         }
     }
+
     /**
-     * 
+     *
      * @param date
-     * @param startingTime 
+     * @param startingTime
      */
     public void processDelete(Date date, Time startingTime) {
         try {
@@ -103,8 +113,32 @@ public class ScheduleService {
         }
     }
     
-    public boolean checkForOverlap(ProgramSlot programSlot) throws ParseException {
+    public boolean checkForOverlap(ProgramSlot programSlot) {
         boolean isOverlap = false;
+//        Date newDate = programSlot.getDate();
+//        Time newStartTime = programSlot.getStartTime();
+//
+//        try {
+//            List<ProgramSlot> programSlotList = scheduleDao.loadAll();
+//            for (int i = 0; i < programSlotList.size(); i++) {
+//                ProgramSlot pgSlot = programSlotList.get(i);
+//                if (pgSlot.getDate().compareTo(newDate) == 0) {
+//                    Time startTime = pgSlot.getStartTime();
+//                    Time endTime = pgSlot.getEndTime();
+//                    if (newStartTime.getTime() >= startTime.getTime() && newStartTime.getTime() <= endTime.getTime()) {
+//                        isOverlap = false;
+//                    } else {
+//                        isOverlap = true;
+//                    }
+//                } else {
+//                    isOverlap = false;
+//                }
+//
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
 //        try {
 //            List<ProgramSlot> programSlotList = scheduleDao.loadAll();
 //
@@ -144,9 +178,8 @@ public class ScheduleService {
 //        } catch (SQLException ex) {
 //            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-
         return isOverlap;
-
+        
     }
-
+    
 }

@@ -24,43 +24,10 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 public class ScheduleDaoImpl implements ScheduleDao {
 
     Connection connection;
-
-    @Override
+    
+        @Override
     public ProgramSlot createValueObject() {
         return new ProgramSlot();
-    }
-
-    @Override
-    public ProgramSlot getObject(String name) throws NotFoundException, SQLException {
-        ProgramSlot valueObject = createValueObject();
-        valueObject.setName(name);
-        load(valueObject);
-        return valueObject;
-
-    }
-
-    @Override
-    public void load(ProgramSlot valueObject) throws NotFoundException, SQLException {
-        if (valueObject.getName() == null) {
-            // System.out.println("Can not select without Primary-Key!");
-            throw new NotFoundException("Can not select without Primary-Key!");
-        }
-
-        String sql = "SELECT * FROM `radio-program` WHERE (`name` = ? ); ";
-        PreparedStatement stmt = null;
-        openConnection();
-        try {
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, valueObject.getName());
-
-            singleQuery(stmt, valueObject);
-
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            closeConnection();
-        }
     }
 
     private void openConnection() {
@@ -261,21 +228,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
             }
             closeConnection();
         }
-    }
-
-    @Override
-    public void deleteAll(Connection conn) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int countAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<ProgramSlot> searchMatching(ProgramSlot valueObject) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
