@@ -452,4 +452,25 @@ public class UserDaoImpl implements UserDao {
 		}
 		return conn;
 	}
+        
+        /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDao#loadAll(java.sql
+	 * .Connection)
+	 */
+	@Override
+	public List<User> loadUserBasedOnRole(String role) throws SQLException {
+
+		String sql = "SELECT * FROM user where role like '%"+role+"%';";
+		List<User> searchResults = listQuery(this.connection
+				.prepareStatement(sql));
+
+		return searchResults;
+	}
+        
+        
+        
+
 }

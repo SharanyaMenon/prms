@@ -46,8 +46,7 @@ public class ProgramService {
 		RadioProgram currentrp = new RadioProgram();
 		currentrp.setName(rpName);
 		try {
-			currentrp = ((ArrayList<RadioProgram>) rpdao
-					.searchMatching(currentrp)).get(0);
+			currentrp = ((ArrayList<RadioProgram>) rpdao.searchMatching(currentrp)).get(0);
 			return currentrp;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
