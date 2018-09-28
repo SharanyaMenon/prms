@@ -38,7 +38,7 @@ public class ReviewSelectPresenterRestService {
         Users users = new Users();
         users.setuserList(new ArrayList<User>());
 
-        for (int i = 0; i < users.getuserList().size(); i++) {
+        for (int i = 0; i < userList.size(); i++) {
             users.getuserList().add(
                     new User(userList.get(i).getName()));
         }
