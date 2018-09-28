@@ -9,7 +9,6 @@ package sg.edu.nus.iss.phoenix.scheduleprogram.restful;
  *
  * @author Meow
  */
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,7 +38,7 @@ public class ReviewSelectProducerRestService {
 
         for (int i = 0; i < userList.size(); i++) {
             users.getuserList().add(
-                    new User(userList.get(i).getName()));
+                    new User(userList.get(i).getId()));
         }
         return users;
     }
