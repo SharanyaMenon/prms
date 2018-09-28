@@ -157,26 +157,37 @@ public class TestClass {
 
     public void testOverlap() {
 
-        Date now = new Date(System.currentTimeMillis());
-        Timestamp ts = new Timestamp(now.getTime());
-        System.out.println(ts);
-         ProgramSlot pgSlot1 = new ProgramSlot();
-        long currentTime = System.currentTimeMillis();
-        pgSlot1.setName("charity");
-        pgSlot1.setPresenter("presnterjfghfghfughi");
-        pgSlot1.setProducer("producerdfczcfsdf");
-        pgSlot1.setDate(new Date(1538019292000l));
-        pgSlot1.setStartTime(new Time(1538019292000l));
-        pgSlot1.setDuration(new Time(1537979400000l));
-        ScheduleService service = new ScheduleService();
-        boolean test = service.checkForOverlap(pgSlot1);
-        System.out.println("test " + test);
+        try {
+            Date now = new Date(System.currentTimeMillis());
+            Timestamp ts = new Timestamp(now.getTime());
+            System.out.println(ts);
+            ProgramSlot pgSlot1 = new ProgramSlot();
+            long currentTime = System.currentTimeMillis();
+            pgSlot1.setName("charity");
+            pgSlot1.setPresenter("presnterjfghfghfughi");
+            pgSlot1.setProducer("producerdfczcfsdf");
+            pgSlot1.setDate(new Date(1538019900000l));
+            pgSlot1.setStartTime(new Time(1538019900000l));
+            pgSlot1.setDuration(new Time(1537979400000l));
+            
+            ScheduleService scheduleService = new ScheduleService();
+            Calendar calendar = scheduleService.computeEndTime(pgSlot1);
+           
+            
+            pgSlot1.setEndTime(new Time(calendar.getTime().getTime()));
+            
+            ScheduleService service = new ScheduleService();
+            boolean test = service.checkForOverlap(pgSlot1);
+            System.out.println("test " + test);
 //        ProgramSlots programSlots = restService.getAllProgramSlot();
 //        ArrayList<ProgramSlot> pgSlotList = programSlots.getPgSlots();
 //        for (int i = 0; i < pgSlotList.size(); i++) {
 //            ProgramSlot pgSlot = pgSlotList.get(i);
 //            System.out.println(pgSlot.toString());;
 //        }
+        } catch (Exception ex) {
+            Logger.getLogger(TestClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

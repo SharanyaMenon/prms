@@ -39,13 +39,22 @@ public class ScheduleRestService {
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean createSchedule(ProgramSlot programSlot) {
-
         boolean isCreated = scheduleService.processCreate(programSlot);
         return isCreated;
     }
+    
+//    @PUT
+//    @Path("/createAnnualSchedule/year/{year}/userName/{userName}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public boolean createAnnualSchedule(int year, String userName) {
+////        scheduleService.
+//        
+//        boolean isCreated = scheduleService.processCreate(programSlot); 
+//        return isCreated;
+//    }
 
     @DELETE
-    @Path("/delete/{dateOfPgm}/startTime/{startTime}")
+    @Path("/delete/dateOfPgm/{dateOfPgm}/startTime/{startTime}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void deleteScheduleProgram(@PathParam("dateOfPgm") Date dateOfPgm, @PathParam("startTime") Time startTime) {
         scheduleService.processDelete(dateOfPgm, startTime);

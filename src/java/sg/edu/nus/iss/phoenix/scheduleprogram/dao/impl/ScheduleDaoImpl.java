@@ -135,12 +135,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public void create(ProgramSlot programSlot) throws SQLException {
-        String sql = "";
         PreparedStatement stmt = null;
         openConnection();
 
         try {
-            sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `presenter`, `producer` , `endTime`) VALUES (?,?,?,?,?,?,?); ";
+           String sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `presenter`, `producer` , `endTime`) VALUES (?,?,?,?,?,?,?); ";
             stmt = connection.prepareStatement(sql);
             stmt.setTime(1, programSlot.getDuration());
             stmt.setDate(2, programSlot.getDate());
@@ -167,7 +166,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public void update(ProgramSlot programSlot) throws NotFoundException, SQLException {
-        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ?, program-name = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
+        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ?, 'program-name' = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
         PreparedStatement stmt = null;
         openConnection();
         try {
