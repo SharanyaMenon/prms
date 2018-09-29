@@ -12,7 +12,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 public interface ScheduleDao {
     

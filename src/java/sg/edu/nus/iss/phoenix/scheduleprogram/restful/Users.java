@@ -16,10 +16,18 @@ public class Users {
 
     private List<User> userList;
 
+    /**
+     * method to retrieve userList
+     * @return 
+     */
     public List<User> getuserList() {
         return userList;
     }
 
+    /**
+     * method to set UserList
+     * @param userList 
+     */
     public void setuserList(List<User> userList) {
         this.userList = userList;
     }

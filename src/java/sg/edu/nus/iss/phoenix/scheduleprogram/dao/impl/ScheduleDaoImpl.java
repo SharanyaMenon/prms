@@ -19,7 +19,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 public class ScheduleDaoImpl implements ScheduleDao {
 
@@ -166,7 +166,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public void update(ProgramSlot programSlot) throws NotFoundException, SQLException {
-        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ?, 'program-name' = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
+        String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ?, `program-name` = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
         PreparedStatement stmt = null;
         openConnection();
         try {
@@ -235,5 +235,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         return result;
     }
+    ///retrive annual scheudle list from db, 
 
 }

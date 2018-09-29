@@ -22,7 +22,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 public class ScheduleService {
 
@@ -37,19 +37,24 @@ public class ScheduleService {
         scheduleDao = daoFactory.getScheduleDAO();
     }
 
+    /**
+     * This is a method to create the program slot
+     *
+     * @param programSlot
+     * @return
+     */
     public boolean processCreate(ProgramSlot programSlot) {
 
         try {
             Calendar calendar = computeEndTime(programSlot);
             programSlot.setEndTime(new Time(calendar.getTime().getTime()));
             
-
+            //1. get all AS from db , checck the year, if present, then we go to the weekly schecduke for that year,else if not present, create annual schedule 
 //            boolean isOverlap = checkForOverlap(programSlot);
 //            if (!isOverlap) {
-                scheduleDao.create(programSlot);
-                
-//            }
+            scheduleDao.create(programSlot);
 
+//            }
         } catch (ParseException ex) {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -59,6 +64,12 @@ public class ScheduleService {
         return false;
     }
 
+    /**S
+     * This is a method to compute EndTime of program Slots
+     * @param programSlot
+     * @return
+     * @throws ParseException 
+     */
     public Calendar computeEndTime(ProgramSlot programSlot) throws ParseException {
 
         Calendar calendar = Calendar.getInstance();
@@ -75,7 +86,10 @@ public class ScheduleService {
         return calendar;
 
     }
-
+/**
+ * This is a method to retrieve all the programSlots
+ * @return the ArrayList of ProgramSlot
+ */
     public ArrayList<ProgramSlot> findAllProgramSlot() {
         ArrayList<ProgramSlot> programSlotList = new ArrayList<ProgramSlot>();
         try {
@@ -88,7 +102,10 @@ public class ScheduleService {
         return programSlotList;
 
     }
-
+/**
+ * This is a method to modify the programSlot
+ * @param programSlot 
+ */
     public void processModify(ProgramSlot programSlot) {
         //check for overlap
         try {
@@ -104,7 +121,7 @@ public class ScheduleService {
     }
 
     /**
-     *
+     * This is a method to delete the program Slot based on the date and startTime
      * @param date
      * @param startingTime
      */
@@ -123,19 +140,18 @@ public class ScheduleService {
 
     public boolean checkForOverlap(ProgramSlot programSlot) throws Exception {
         boolean isOverlap = false;
-        
-        
+
         Date newDate = programSlot.getDate();
         Time newStartTime = programSlot.getStartTime();
         System.out.println("Program Slot : " + programSlot.toString());
         System.out.println("");
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date newDatecompare = sdf.parse(newDate.toString());
-        
+
         Calendar newStartTimeCalendar = Calendar.getInstance();
         newStartTimeCalendar.setTimeInMillis(programSlot.getStartTime().getTime());
-        
+
         Calendar newendTimeClaendar = Calendar.getInstance();
         newendTimeClaendar.setTimeInMillis(programSlot.getStartTime().getTime());
         try {
@@ -147,30 +163,27 @@ public class ScheduleService {
                 if (oldDateCompare.compareTo(newDatecompare) == 0) {
                     //its same day
 
-                     Calendar startTimeCalendar = Calendar.getInstance();
-                     startTimeCalendar.setTimeInMillis(pgSlot.getStartTime().getTime());
-                     
-                     Calendar enttimecalendar = Calendar.getInstance();
-                     enttimecalendar.setTimeInMillis(pgSlot.getEndTime().getTime());
-                     
-                     if (newStartTimeCalendar.before(enttimecalendar) && newendTimeClaendar.after(startTimeCalendar)){
-                         isOverlap = false;
-                     }
+                    Calendar startTimeCalendar = Calendar.getInstance();
+                    startTimeCalendar.setTimeInMillis(pgSlot.getStartTime().getTime());
 
-                     
-//                     int beforeStart = newendTimeClaendar.compareTo(startTimeCalendar);
-//                     int afterend = newendTimeClaendar.compareTo(enttimecalendar);
-//                     System.out.println("before " +beforeStart +"after " +afterend);
-//                     if (beforeStart <1 && afterend >1){
-//                         isOverlap = false;
-//                     }
-////                     if (startTimeCalendar.compareTo(enttimecalendar) < 1){
-////                          isOverlap = false;
-////                     }
-                     else {
-                         isOverlap = true;
-                         break;
-                     }
+                    Calendar enttimecalendar = Calendar.getInstance();
+                    enttimecalendar.setTimeInMillis(pgSlot.getEndTime().getTime());
+
+                    if (newStartTimeCalendar.before(enttimecalendar) && newendTimeClaendar.after(startTimeCalendar)) {
+                        isOverlap = false;
+                    } //                     int beforeStart = newendTimeClaendar.compareTo(startTimeCalendar);
+                    //                     int afterend = newendTimeClaendar.compareTo(enttimecalendar);
+                    //                     System.out.println("before " +beforeStart +"after " +afterend);
+                    //                     if (beforeStart <1 && afterend >1){
+                    //                         isOverlap = false;
+                    //                     }
+                    ////                     if (startTimeCalendar.compareTo(enttimecalendar) < 1){
+                    ////                          isOverlap = false;
+                    ////                     }
+                    else {
+                        isOverlap = true;
+                        break;
+                    }
 //                    Time startTime = pgSlot.getStartTime();
 //                    Time endTime = pgSlot.getEndTime();
 
@@ -233,9 +246,9 @@ public class ScheduleService {
         return isOverlap;
 
     }
-    
-    public void createAnnualSchedule(int year, String userName){
-        
+
+    public void createAnnualSchedule(int year, String userName) {
+
     }
 
 }

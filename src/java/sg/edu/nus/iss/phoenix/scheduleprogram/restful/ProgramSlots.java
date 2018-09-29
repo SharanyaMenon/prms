@@ -11,7 +11,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 public class ProgramSlots {
 
@@ -28,6 +28,10 @@ public class ProgramSlots {
         return hash;
     }
 
+    public void setPgSlots(ArrayList<ProgramSlot> pgSlots) {
+        this.pgSlots = pgSlots;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -41,10 +45,6 @@ public class ProgramSlots {
         }
         final ProgramSlots other = (ProgramSlots) obj;
         return true;
-    }
-
-    public void setPgSlots(ArrayList<ProgramSlot> pgSlots) {
-        this.pgSlots = pgSlots;
     }
 
 }

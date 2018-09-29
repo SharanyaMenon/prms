@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 public class ProgramSlot {
 

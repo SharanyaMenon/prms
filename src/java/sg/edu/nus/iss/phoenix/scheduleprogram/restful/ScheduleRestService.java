@@ -24,7 +24,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 @Path("scheduleprogram")
 public class ScheduleRestService {
@@ -35,14 +35,22 @@ public class ScheduleRestService {
         scheduleService = new ScheduleService();
     }
 
+    /**
+     *
+     * PUT method to createSchedule
+     *
+     * @param programSlot
+     * @return
+     */
     @PUT
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean createSchedule(ProgramSlot programSlot) {
+        
         boolean isCreated = scheduleService.processCreate(programSlot);
         return isCreated;
     }
-    
+
 //    @PUT
 //    @Path("/createAnnualSchedule/year/{year}/userName/{userName}")
 //    @Consumes(MediaType.APPLICATION_JSON)
@@ -52,7 +60,12 @@ public class ScheduleRestService {
 //        boolean isCreated = scheduleService.processCreate(programSlot); 
 //        return isCreated;
 //    }
-
+    /**
+     * Delete method to delete Schedule Program
+     *
+     * @param dateOfPgm
+     * @param startTime
+     */
     @DELETE
     @Path("/delete/dateOfPgm/{dateOfPgm}/startTime/{startTime}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,6 +73,11 @@ public class ScheduleRestService {
         scheduleService.processDelete(dateOfPgm, startTime);
     }
 
+    /**
+     * POST method to update Program Slot
+     *
+     * @param programSlot
+     */
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -67,6 +85,11 @@ public class ScheduleRestService {
         scheduleService.processModify(programSlot);
     }
 
+    /**
+     * GET method to get all Program Slot
+     *
+     * @return
+     */
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
