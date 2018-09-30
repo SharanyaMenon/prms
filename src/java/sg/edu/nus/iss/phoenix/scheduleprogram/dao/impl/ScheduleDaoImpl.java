@@ -24,8 +24,13 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 public class ScheduleDaoImpl implements ScheduleDao {
 
     Connection connection;
-    
-        @Override
+
+
+    /**
+     * Returns the new Object
+     * @return 
+     */
+     @Override
     public ProgramSlot createValueObject() {
         return new ProgramSlot();
     }
@@ -57,7 +62,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
             result = stmt.executeQuery();
 
             while (result.next()) {
-                
+
                 ProgramSlot pgSlot = createValueObject();
                 pgSlot.setDuration(result.getTime("duration"));
                 pgSlot.setDate(result.getDate("dateOfProgram"));
@@ -67,7 +72,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 pgSlot.setProducer(result.getString("presenter"));
                 pgSlot.setEndTime(result.getTime("endTime"));
                 pgSlotList.add(pgSlot);
-                
+
             }
 
         } finally {
@@ -121,7 +126,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
             closeConnection();
         }
     }
-
+ 
+    
     @Override
     public List<ProgramSlot> loadAll() throws SQLException {
         openConnection();
@@ -134,12 +140,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public void create(ProgramSlot programSlot) throws SQLException {
+    public boolean create(ProgramSlot programSlot) throws SQLException {
         PreparedStatement stmt = null;
         openConnection();
 
         try {
-           String sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `presenter`, `producer` , `endTime`) VALUES (?,?,?,?,?,?,?); ";
+            String sql = "INSERT INTO `program-slot` (`duration`, `dateOfProgram`, `startTime`, `program-name`, `presenter`, `producer` , `endTime`) VALUES (?,?,?,?,?,?,?); ";
             stmt = connection.prepareStatement(sql);
             stmt.setTime(1, programSlot.getDuration());
             stmt.setDate(2, programSlot.getDate());
@@ -153,6 +159,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
             if (rowcount != 1) {
                 // System.out.println("PrimaryKey Error when updating DB!");
                 throw new SQLException("PrimaryKey Error when updating DB!");
+            } else {
+                return true;
             }
 
         } finally {
@@ -165,7 +173,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public void update(ProgramSlot programSlot) throws NotFoundException, SQLException {
+    public boolean update(ProgramSlot programSlot) throws NotFoundException, SQLException {
         String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ?, `program-name` = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
         PreparedStatement stmt = null;
         openConnection();
@@ -188,6 +196,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 // System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
                 throw new SQLException(
                         "PrimaryKey Error when updating DB! (Many objects were affected!)");
+            } else {
+                return true;
             }
         } finally {
             if (stmt != null) {
@@ -199,8 +209,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public void delete(ProgramSlot programSlot) throws NotFoundException, SQLException {
-        if (programSlot.getStartTime() == null||programSlot.getDate() == null) {
+    public boolean delete(ProgramSlot programSlot) throws NotFoundException, SQLException {
+        boolean isDeleted = false;
+        if (programSlot.getStartTime() == null || programSlot.getDate() == null) {
+            isDeleted = false;
             throw new NotFoundException("Can not delete without Primary-Key!");
         }
 
@@ -214,12 +226,16 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount == 0) {
+                isDeleted = false;
                 throw new NotFoundException(
                         "Object could not be deleted! (PrimaryKey not found)");
             }
             if (rowcount > 1) {
+                isDeleted = false;
                 throw new SQLException(
                         "PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            } else {
+                isDeleted = true;
             }
         } finally {
             if (stmt != null) {
@@ -227,6 +243,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
             }
             closeConnection();
         }
+        return isDeleted;
     }
 
     protected int databaseUpdate(PreparedStatement stmt) throws SQLException {

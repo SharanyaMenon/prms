@@ -22,7 +22,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 
 /**
  *
- * @author sharanya
+ * @author sharanya 
  */
 public class ScheduleService {
 
@@ -44,15 +44,15 @@ public class ScheduleService {
      * @return
      */
     public boolean processCreate(ProgramSlot programSlot) {
-
+        boolean isCreated = false;
         try {
             Calendar calendar = computeEndTime(programSlot);
             programSlot.setEndTime(new Time(calendar.getTime().getTime()));
-            
+
             //1. get all AS from db , checck the year, if present, then we go to the weekly schecduke for that year,else if not present, create annual schedule 
 //            boolean isOverlap = checkForOverlap(programSlot);
 //            if (!isOverlap) {
-            scheduleDao.create(programSlot);
+            isCreated = scheduleDao.create(programSlot);
 
 //            }
         } catch (ParseException ex) {
@@ -61,14 +61,16 @@ public class ScheduleService {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return false;
+        return isCreated;
     }
 
-    /**S
+    /**
+     * 
      * This is a method to compute EndTime of program Slots
+     *
      * @param programSlot
-     * @return
-     * @throws ParseException 
+     * @return Calendar
+     * @throws ParseException
      */
     public Calendar computeEndTime(ProgramSlot programSlot) throws ParseException {
 
@@ -86,10 +88,12 @@ public class ScheduleService {
         return calendar;
 
     }
-/**
- * This is a method to retrieve all the programSlots
- * @return the ArrayList of ProgramSlot
- */
+
+    /**
+     * This is a method to retrieve all the programSlots
+     *
+     * @return the ArrayList of ProgramSlot
+     */
     public ArrayList<ProgramSlot> findAllProgramSlot() {
         ArrayList<ProgramSlot> programSlotList = new ArrayList<ProgramSlot>();
         try {
@@ -102,15 +106,19 @@ public class ScheduleService {
         return programSlotList;
 
     }
-/**
- * This is a method to modify the programSlot
- * @param programSlot 
- */
-    public void processModify(ProgramSlot programSlot) {
+
+
+    /**
+     * This is a method to modify the programSlot
+     * @param programSlot
+     * @return boolean
+     */
+    public boolean processModify(ProgramSlot programSlot) {
         //check for overlap
+        boolean isMoified = false;
         try {
-            boolean isOverlap = checkForOverlap(programSlot);
-            scheduleDao.update(programSlot);
+//            boolean isOverlap = checkForOverlap(programSlot);
+            isMoified = scheduleDao.update(programSlot);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -118,17 +126,20 @@ public class ScheduleService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return isMoified;
     }
 
     /**
      * This is a method to delete the program Slot based on the date and startTime
      * @param date
      * @param startingTime
+     * @return boolean
      */
-    public void processDelete(Date date, Time startingTime) {
+    public boolean processDelete(Date date, Time startingTime) {
+        boolean isDeleted = false;
         try {
             ProgramSlot programSlot = new ProgramSlot(date, startingTime);
-            scheduleDao.delete(programSlot);
+            isDeleted = scheduleDao.delete(programSlot);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -136,8 +147,15 @@ public class ScheduleService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return isDeleted;
     }
 
+    /**
+     * Function which tests for overlap
+     * @param programSlot
+     * @return boolean
+     * @throws Exception 
+     */
     public boolean checkForOverlap(ProgramSlot programSlot) throws Exception {
         boolean isOverlap = false;
 
@@ -247,7 +265,12 @@ public class ScheduleService {
 
     }
 
-    public void createAnnualSchedule(int year, String userName) {
+//    public void createAnnualSchedule(int year, String userName) {
+//
+//    }
+
+    public void setScheduleDao(ScheduleDao mockScheduleDao) {
+        scheduleDao = mockScheduleDao;
 
     }
 

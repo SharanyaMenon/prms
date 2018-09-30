@@ -46,20 +46,11 @@ public class ScheduleRestService {
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean createSchedule(ProgramSlot programSlot) {
-        
+
         boolean isCreated = scheduleService.processCreate(programSlot);
         return isCreated;
     }
 
-//    @PUT
-//    @Path("/createAnnualSchedule/year/{year}/userName/{userName}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public boolean createAnnualSchedule(int year, String userName) {
-////        scheduleService.
-//        
-//        boolean isCreated = scheduleService.processCreate(programSlot); 
-//        return isCreated;
-//    }
     /**
      * Delete method to delete Schedule Program
      *
@@ -106,4 +97,14 @@ public class ScheduleRestService {
         }
         return programSlots;
     }
+
+//    @PUT
+//    @Path("/createAnnualSchedule/year/{year}/userName/{userName}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public boolean createAnnualSchedule(int year, String userName) {
+////        scheduleService.
+//        
+//        boolean isCreated = scheduleService.processCreate(programSlot); 
+//        return isCreated;
+//    }
 }

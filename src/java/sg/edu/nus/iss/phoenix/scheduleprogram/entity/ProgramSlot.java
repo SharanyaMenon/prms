@@ -18,39 +18,53 @@ public class ProgramSlot {
     private String name;
     private Time duration;
     private Date date;
-    private Time  startTime;
-    private Time  endTime;
+    private Time startTime;
+    private Time endTime;
     private String presenter;
     private String producer;
 
-    public ProgramSlot(String name, Time typicalDuration, Date date, Time  startTime, String presenter, String producer) {
+    /**
+     * Constructor to create the ProgramSlot Object
+     *
+     * @param name
+     * @param typicalDuration
+     * @param date
+     * @param startTime
+     * @param presenter
+     * @param producer
+     */
+    public ProgramSlot(String name, Time typicalDuration, Date date, Time startTime, String presenter, String producer) {
         this.name = name;
         this.duration = typicalDuration;
         this.date = date;
         this.startTime = startTime;
         this.presenter = presenter;
         this.producer = producer;
-       
+
     }
-   
+
     public ProgramSlot(Date date, Time startTime) {
         this.date = date;
         this.startTime = startTime;
     }
 
+    /**
+     * Returns the String representation of the contents of this object
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "ProgramSlot{" + "name=" + name + ", duration=" + duration + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime + ", presenter=" + presenter + ", producer=" + producer + '}';
     }
 
-    public Time  getEndTime() {
+    public Time getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Time  endTime) {
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
-   
 
     public ProgramSlot() {
 
@@ -68,6 +82,11 @@ public class ProgramSlot {
         this.presenter = presenter;
     }
 
+    /**
+     * Function to get the hashcode
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -81,6 +100,12 @@ public class ProgramSlot {
         return hash;
     }
 
+    /**
+     * Function to check the equality of two objects
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -117,43 +142,93 @@ public class ProgramSlot {
         return true;
     }
 
+    /**
+     * Function to get the producer
+     *
+     * @return
+     */
     public String getProducer() {
         return producer;
     }
 
+    /**
+     * Function to set Producer
+     *
+     * @param producer
+     */
     public void setProducer(String producer) {
         this.producer = producer;
     }
 
+    /**
+     * Function to return the Name
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Function to set the Name
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * function to get the duration
+     *
+     * @return
+     */
     public Time getDuration() {
         return duration;
     }
 
+    /**
+     * Function to set duration
+     *
+     * @param duration
+     */
     public void setDuration(Time duration) {
         this.duration = duration;
     }
 
+    /**
+     * function to get the date
+     *
+     * @return
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets the date
+     *
+     * @param date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public Time  getStartTime() {
+    /**
+     * returns the start time
+     *
+     * @return
+     */
+    public Time getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time  startTime) {
+    /**
+     * Sets the startTime
+     *
+     * @param startTime
+     */
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
