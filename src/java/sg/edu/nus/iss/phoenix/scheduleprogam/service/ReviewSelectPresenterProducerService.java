@@ -29,6 +29,22 @@ public class ReviewSelectPresenterProducerService {
         DAOFactoryImpl factory;
 	UserDao userdao;
 
+    public DAOFactoryImpl getFactory() {
+        return factory;
+    }
+
+    public void setFactory(DAOFactoryImpl factory) {
+        this.factory = factory;
+    }
+
+    public UserDao getUserdao() {
+        return userdao;
+    }
+
+    public void setUserdao(UserDao userdao) {
+        this.userdao = userdao;
+    }
+
 	public ReviewSelectPresenterProducerService() {
 		super();
 		// TODO Auto-generated constructor stub
