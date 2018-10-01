@@ -8,7 +8,9 @@ package sg.edu.nus.iss.phoenix.scheduleprogam.service;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import static org.hamcrest.Matchers.containsString;
 import org.hamcrest.collection.*;
 import org.junit.After;
@@ -29,7 +31,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.impl.ScheduleDaoImpl;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.AnnualSchedule;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.WeeklySchedule;
 
 /**
  *
@@ -97,10 +101,10 @@ public class ScheduleServiceTest {
 //        when(mockScheduleDao.loadAll()).thenReturn(pgSlotList);
         when(mockScheduleDao.create(pgSlot1)).thenReturn(false);
         when(mockScheduleDao.update(pgSlot1)).thenReturn(true);
-//        doNothing().when(mockScheduleDao).create(isA(ProgramSlot.class));
-//        doNothing().when(mockScheduleDaoImpl).create(isA(ProgramSlot.class));
-//        doNothing().when(mockScheduleDaoImpl).delete(isA(ProgramSlot.class));
-//        doNothing().when(mockScheduleDao).delete(isA(ProgramSlot.class));
+        doNothing().when(mockScheduleDao).addWs(isA(WeeklySchedule.class));
+        doNothing().when(mockScheduleDaoImpl).addWs(isA(WeeklySchedule.class));
+        doNothing().when(mockScheduleDaoImpl).addAS(isA(AnnualSchedule.class));
+        doNothing().when(mockScheduleDao).addAS(isA(AnnualSchedule.class));
     }
 
     @After
@@ -205,23 +209,23 @@ public class ScheduleServiceTest {
         Assert.assertTrue(result);
 
     }
-
-    //    /**
-//     * Test of checkForOverlap method, of class ScheduleService.
-//     */
-//    @Test
-//    public void testCheckForOverlap() {
-//        try {
-//            System.out.println("checkForOverlap");
-//            ProgramSlot programSlot = null;
-//            ScheduleService instance = new ScheduleService();
-//            boolean expResult = false;
-//            boolean result = instance.checkForOverlap(programSlot);
-//            assertEquals(expResult, result);
-//            // TODO review the generated test code and remove the default call to fail.
-//            fail("The test case is a prototype.");
-//        } catch (Exception ex) {
-//            Logger.getLogger(ScheduleServiceTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+   
+    /**
+     * Test of computeEndTime method, of class ScheduleService.
+     */
+    @Test
+    public void computeEndTime() throws ParseException{
+        System.out.println("computeEndTime");
+        ProgramSlot slot = new ProgramSlot();
+        slot.setName("charity");
+        slot.setPresenter("presnter");
+        slot.setProducer("producerdfczcfsdf");
+        long timeInMilli = 1538387465000L;
+        slot.setDate(new Date(timeInMilli));
+        slot.setStartTime(new Time(timeInMilli));
+        slot.setDuration(new Time(1537979400000l));
+        Calendar cal = service.computeEndTime(slot);
+        Time time = new Time(cal.getTime().getTime());
+        assertThat(time.toString(),containsString("18:21"));
+    }
 }

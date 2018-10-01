@@ -8,7 +8,9 @@ package sg.edu.nus.iss.phoenix.scheduleprogram.dao;
 import java.sql.SQLException;
 import java.util.List;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.AnnualSchedule;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.WeeklySchedule;
 
 /**
  *
@@ -79,5 +81,30 @@ public interface ScheduleDao {
      */
     public abstract boolean delete(ProgramSlot programSlot)
             throws NotFoundException, SQLException;
+
+    /**
+     * This method is used to create Weekly Schedule
+     *
+     * @param weeklySchedule
+     * @throws SQLException
+     */
+    public void addWs(WeeklySchedule weeklySchedule) throws SQLException;
+
+    /**
+     * This method is used to create Annual Schedule
+     *
+     * @param annualSchedule
+     * @throws SQLException
+     */
+    public void addAS(AnnualSchedule annualSchedule) throws SQLException;
+
+    /**
+     * This method is used to read Annual Schedule
+     *
+     * @param year
+     * @return
+     * @throws SQLException
+     */
+    public boolean readAS(int year) throws SQLException;
 
 }

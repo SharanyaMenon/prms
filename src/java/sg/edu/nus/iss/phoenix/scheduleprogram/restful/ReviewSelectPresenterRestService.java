@@ -21,9 +21,7 @@ import sg.edu.nus.iss.phoenix.scheduleprogam.service.ReviewSelectPresenterProduc
 
 @Path("retrievePresenter")
 public class ReviewSelectPresenterRestService {
-    //one function to get all the details from the user tabale based on their roles i.e presenter
-    //it will reuse the User Entity object
-
+   
     private ReviewSelectPresenterProducerService service;
 
     public ReviewSelectPresenterRestService() {

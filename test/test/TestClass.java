@@ -12,25 +12,30 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.scheduleprogam.service.ScheduleService;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.scheduleprogram.restful.ProgramSlots;
+import sg.edu.nus.iss.phoenix.scheduleprogram.restful.ReviewSelectProducerRestService;
 import sg.edu.nus.iss.phoenix.scheduleprogram.restful.ScheduleRestService;
+import sg.edu.nus.iss.phoenix.scheduleprogram.restful.Users;
 
 /**
  *
- * @author shara
+ * @author sharanya
  */
 public class TestClass {
 
     public static void main(String[] args) {
         TestClass testClass = new TestClass();
         try {
-            testClass.testOverlap();
-//            testClass.createPgSlot();
+//            testClass.testOverlap();
+//            testClass.testRetrieve();
+            testClass.createPgSlot();
 //    testClass.getAllPgSlots();
 //            testClass.delete();
 //testClass.update();
@@ -46,7 +51,7 @@ public class TestClass {
         Date now = new Date(System.currentTimeMillis());
         Timestamp ts = new Timestamp(now.getTime());
         System.out.println(ts);
-         ProgramSlot pgSlot1 = new ProgramSlot();
+        ProgramSlot pgSlot1 = new ProgramSlot();
         long currentTime = System.currentTimeMillis();
         pgSlot1.setName("charity");
         pgSlot1.setPresenter("presnterjfghfghfughi");
@@ -64,7 +69,7 @@ public class TestClass {
         programSlot.setStartTime(new Time(System.currentTimeMillis()));
         programSlot.setDuration(new Time(System.currentTimeMillis()));
 
-        restService.createSchedule(pgSlot1);
+        restService.createSchedule(programSlot);
     }
 
 //    private void delete() {
@@ -72,38 +77,38 @@ public class TestClass {
 //        restService.deleteScheduleProgram("2018-09-24 00:00:00", "2018-09-24 20:34:00");
 //
 //    }
-//
-//    private void update() throws ParseException {
-//        ScheduleRestService restService = new ScheduleRestService();
-//        
+
+    private void update() throws ParseException {
+        ScheduleRestService restService = new ScheduleRestService();
+        
+        ProgramSlot programSlot = new ProgramSlot();
+        programSlot.setName("charity");
+        programSlot.setPresenter("presnterjfghfghfughi");
+        programSlot.setProducer("producerdfczcfsdf");
+        programSlot.setDate(new Date(System.currentTimeMillis()));
+        programSlot.setStartTime(new Time(System.currentTimeMillis()));
+        programSlot.setDuration(new Time(System.currentTimeMillis()));
+        
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date date  = sdf.parse("2018-09-30");
 //        ProgramSlot programSlot = new ProgramSlot();
-//        programSlot.setName("charity");
-//        programSlot.setPresenter("presnterjfghfghfughi");
-//        programSlot.setProducer("producerdfczcfsdf");
-//        programSlot.setDate(new Date(System.currentTimeMillis()));
-//        programSlot.setStartTime(new Time(System.currentTimeMillis()));
-//        programSlot.setDuration(new Time(System.currentTimeMillis()));
-//        
-//        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-//        java.util.Date date  = sdf.parse("2018-09-27");
-////        ProgramSlot programSlot = new ProgramSlot();
-////
-////        programSlot.setName("charity");
-////        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-////        java.util.Date startTime = sdf.parse("2018-09-24 20:34:00");
-////        Timestamp stTime = new Timestamp(startTime.getTime());
-////        java.util.Date date = sdf.parse("2018-09-24 00:00:00");
-////        Timestamp dt = new Timestamp(date.getTime());
-////        programSlot.setDate(dt);
-////
-////        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
-////        programSlot.setPresenter("hi");
-////        programSlot.setProducer("haaaaiiiiiiiii");
-////        programSlot.setStartTime(stTime);
-////        programSlot.setDuration(new Time(System.currentTimeMillis() + 1000));
-//        restService.updateProgramSlot(programSlot);
 //
-//    }
+//        programSlot.setName("charity");
+//        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        java.util.Date startTime = sdf.parse("2018-09-24 20:34:00");
+//        Timestamp stTime = new Timestamp(startTime.getTime());
+//        java.util.Date date = sdf.parse("2018-09-24 00:00:00");
+//        Timestamp dt = new Timestamp(date.getTime());
+//        programSlot.setDate(dt);
+//
+//        programSlot.setEndTime(new Timestamp(System.currentTimeMillis()));
+//        programSlot.setPresenter("hi");
+//        programSlot.setProducer("haaaaiiiiiiiii");
+//        programSlot.setStartTime(stTime);
+//        programSlot.setDuration(new Time(System.currentTimeMillis() + 1000));
+        restService.updateProgramSlot(programSlot);
+
+    }
     public void test() throws ParseException {
         Date now = new Date(System.currentTimeMillis());
         Timestamp ts = new Timestamp(now.getTime());
@@ -189,6 +194,18 @@ public class TestClass {
             Logger.getLogger(TestClass.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void testRetrieve() {
+        ReviewSelectProducerRestService reviewSelectProducerRestService  =  new ReviewSelectProducerRestService();
+        Users users = reviewSelectProducerRestService.getProducer();
+        List<User> userList = users.getuserList();
+        for (int i=0;i<userList.size();i++){
+            User user  =  userList.get(i);
+            System.out.println("users "+ user.getId());
+        }
+        
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -12,10 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.AnnualSchedule;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.WeeklySchedule;
 
 /**
  *
@@ -127,7 +131,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
         }
     }
  
-    
+    /**
+     * Method to load All ProgramSlots from Database
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public List<ProgramSlot> loadAll() throws SQLException {
         openConnection();
@@ -139,6 +147,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     }
 
+    /**
+     * Method to create Program Slot in Database
+     * @param programSlot
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean create(ProgramSlot programSlot) throws SQLException {
         PreparedStatement stmt = null;
@@ -171,7 +185,13 @@ public class ScheduleDaoImpl implements ScheduleDao {
         }
 
     }
-
+/**
+ * Method to update Program Slot in Database
+ * @param programSlot
+ * @return
+ * @throws NotFoundException
+ * @throws SQLException 
+ */
     @Override
     public boolean update(ProgramSlot programSlot) throws NotFoundException, SQLException {
         String sql = "UPDATE `program-slot` SET `presenter` = ?, `producer` = ?,  `duration` = ?, `program-name` = ? WHERE (`dateOfProgram` = ? and `startTime` = ? ); ";
@@ -207,7 +227,13 @@ public class ScheduleDaoImpl implements ScheduleDao {
         }
 
     }
-
+/***
+ * Method to delete Program Slot from Database
+ * @param programSlot
+ * @return
+ * @throws NotFoundException
+ * @throws SQLException 
+ */
     @Override
     public boolean delete(ProgramSlot programSlot) throws NotFoundException, SQLException {
         boolean isDeleted = false;
@@ -252,6 +278,119 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         return result;
     }
-    ///retrive annual scheudle list from db, 
+
+    
+    /**
+     * Method to add Weekly Schedule to Database
+     * @param weeklySchedule
+     * @throws SQLException
+     */
+    @Override
+    public void addWs(WeeklySchedule weeklySchedule) throws SQLException{
+        
+         PreparedStatement stmt = null;
+        openConnection();
+
+        try {
+            String sql = "INSERT INTO `weekly-schedule` (`startDate`, `startTime`, `assignedBy`) VALUES (?,?,?); ";
+            stmt = connection.prepareStatement(sql);
+            stmt.setDate(1, weeklySchedule.getStartDate());
+            stmt.setTime(2, weeklySchedule.getStartTime());
+            stmt.setString(3, weeklySchedule.getAssignedBy());
+            
+
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount != 1) {
+                // System.out.println("PrimaryKey Error when updating DB!");
+                throw new SQLException("PrimaryKey Error when updating DB!");
+            } else {
+//                return true;
+            }
+
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            closeConnection();
+        }
+        
+    }
+    /**
+     * Method to add Annual Schedule to Database
+     * @param annualSchedule
+     * @throws SQLException 
+     */
+    public void addAS(AnnualSchedule annualSchedule)throws SQLException{
+        
+         PreparedStatement stmt = null;
+        openConnection();
+
+        try {
+            String sql = "INSERT INTO `annual-schedule` (`year`, `assingedBy`) VALUES (?,?); ";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, annualSchedule.getYear());
+            stmt.setString(2, annualSchedule.getAssignedBy());
+                      
+
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount != 1) {
+                // System.out.println("PrimaryKey Error when updating DB!");
+                throw new SQLException("PrimaryKey Error when updating DB!");
+            } else {
+//                return true;
+            }
+
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            closeConnection();
+        }
+    }
+    
+    /**
+     * Method to read Annual Schedule from Database
+     * @param year
+     * @return
+     * @throws SQLException 
+     */
+    @Override
+    public boolean readAS(int year) throws SQLException {
+        boolean isPresent = false;
+        
+        openConnection();
+        String sql = "SELECT year FROM `annual-schedule` WHERE  (`year` = "+year+")";
+        int y = getYear(connection.prepareStatement(sql));
+        if(y!=0){
+            isPresent = true;
+        }
+        closeConnection();
+        return isPresent;
+    }
+    
+    protected int getYear(PreparedStatement stmt) throws SQLException {
+      
+        int year = 0;
+        ResultSet result = null;
+        openConnection();
+        try {
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                year = result.getInt("year");
+            }
+
+        } finally {
+            if (result != null) {
+                result.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            closeConnection();
+        }
+
+        return year;
+    }
 
 }

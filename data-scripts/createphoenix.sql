@@ -97,12 +97,7 @@ DROP TABLE IF EXISTS `phoenix`.`annual-schedule` ;
 CREATE  TABLE IF NOT EXISTS `phoenix`.`annual-schedule` (
   `year` INT NOT NULL ,
   `assingedBy` VARCHAR(45) NULL ,
-  PRIMARY KEY (`year`) ,
-  CONSTRAINT `id_as`
-    FOREIGN KEY (`assingedBy` )
-    REFERENCES `phoenix`.`user` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`year`))
 ENGINE = InnoDB;
 
 CREATE INDEX `id_annual_schedule` ON `phoenix`.`annual-schedule` (`assingedBy` ASC) ;
@@ -112,12 +107,16 @@ CREATE INDEX `id_annual_schedule` ON `phoenix`.`annual-schedule` (`assingedBy` A
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `phoenix`.`program-slot` ;
 
+
 CREATE  TABLE IF NOT EXISTS `phoenix`.`program-slot` (
   `duration` TIME NOT NULL ,
-  `dateOfProgram` DATETIME NOT NULL ,
-  `startTime` DATETIME NULL ,
+  `dateOfProgram` DATE NOT NULL ,
+  `startTime` TIME NOT NULL ,
   `program-name` VARCHAR(45) NULL ,
-  PRIMARY KEY (`duration`, `dateOfProgram`) ,
+  `endTime` TIME NULL ,
+  `presenter` VARCHAR(45) NULL ,
+  `producer` VARCHAR(45) NULL ,
+  PRIMARY KEY (`dateOfProgram`, `startTime`) ,
   CONSTRAINT `name`
     FOREIGN KEY (`program-name` )
     REFERENCES `phoenix`.`radio-program` (`name` )
@@ -135,12 +134,13 @@ CREATE UNIQUE INDEX `dateOfProgram_UNIQUE` ON `phoenix`.`program-slot` (`dateOfP
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `phoenix`.`weekly-schedule` ;
 CREATE  TABLE IF NOT EXISTS `phoenix`.`weekly-schedule` (
-  `startDate` DATETIME NOT NULL ,
+  `startDate` DATE NOT NULL ,
+  `startTime` TIME NOT NULL ,
   `assignedBy` VARCHAR(45) NULL ,
-  PRIMARY KEY (`startDate`) ,
+  PRIMARY KEY (`startDate`, `startTime`) ,
   CONSTRAINT `id_ws`
     FOREIGN KEY (`assignedBy` )
-    REFERENCES `phoenix`.`user` (`id` )
+    REFERENCES `phoenix`.`user` (`name` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

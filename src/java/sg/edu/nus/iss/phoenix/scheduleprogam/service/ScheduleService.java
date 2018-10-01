@@ -18,7 +18,9 @@ import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.scheduleprogram.dao.ScheduleDao;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.AnnualSchedule;
 import sg.edu.nus.iss.phoenix.scheduleprogram.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.scheduleprogram.entity.WeeklySchedule;
 
 /**
  *
@@ -32,7 +34,6 @@ public class ScheduleService {
 
     public ScheduleService() {
         super();
-        // Sorry. This implementation is wrong. To be fixed.
         daoFactory = new DAOFactoryImpl();
         scheduleDao = daoFactory.getScheduleDAO();
     }
@@ -48,13 +49,13 @@ public class ScheduleService {
         try {
             Calendar calendar = computeEndTime(programSlot);
             programSlot.setEndTime(new Time(calendar.getTime().getTime()));
-
-            //1. get all AS from db , checck the year, if present, then we go to the weekly schecduke for that year,else if not present, create annual schedule 
-//            boolean isOverlap = checkForOverlap(programSlot);
-//            if (!isOverlap) {
+      
             isCreated = scheduleDao.create(programSlot);
+            programSlot.getDate();
+            
+            createWS(programSlot);
+            createAS(programSlot);
 
-//            }
         } catch (ParseException ex) {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -63,6 +64,26 @@ public class ScheduleService {
 
         return isCreated;
     }
+
+    private void createWS(ProgramSlot programSlot) throws SQLException {
+        WeeklySchedule weeklySchedule =  new WeeklySchedule(programSlot.getPresenter(), programSlot.getDate(), programSlot.getStartTime());
+        scheduleDao.addWs(weeklySchedule);
+    }
+    
+     private void createAS(ProgramSlot programSlot) throws SQLException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(programSlot.getStartTime());
+        int year = calendar.get(Calendar.YEAR);
+        AnnualSchedule annualSchedule = new AnnualSchedule(year, programSlot.getPresenter());
+        boolean isPresent = scheduleDao.readAS(year);
+         System.out.println(isPresent);
+         if (!isPresent){
+             scheduleDao.addAS(annualSchedule);
+         }
+        
+    }
+    
+    
 
     /**
      * 
