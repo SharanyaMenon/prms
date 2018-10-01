@@ -95,7 +95,6 @@ public class ScheduleServiceTest {
         pgSlotList.add(pgSlot1);
         pgSlotList.add(pgSlot2);
 
-        //Stubbing the methods of mocked BookDAL with mocked data. 
 //        when(mockScheduleService.findAllProgramSlot()).thenReturn(pgSlotList);
         when(mockScheduleDao.loadAll()).thenReturn(pgSlotList);
 //        when(mockScheduleDao.loadAll()).thenReturn(pgSlotList);
