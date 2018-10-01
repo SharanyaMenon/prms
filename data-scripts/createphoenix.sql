@@ -136,13 +136,7 @@ DROP TABLE IF EXISTS `phoenix`.`weekly-schedule` ;
 CREATE  TABLE IF NOT EXISTS `phoenix`.`weekly-schedule` (
   `startDate` DATE NOT NULL ,
   `startTime` TIME NOT NULL ,
-  `assignedBy` VARCHAR(45) NULL ,
-  PRIMARY KEY (`startDate`, `startTime`) ,
-  CONSTRAINT `id_ws`
-    FOREIGN KEY (`assignedBy` )
-    REFERENCES `phoenix`.`user` (`name` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `assignedBy` VARCHAR(45) NULL )
 ENGINE = InnoDB;
 
 CREATE UNIQUE INDEX `startDate_UNIQUE` ON `phoenix`.`weekly-schedule` (`startDate` ASC) ;
